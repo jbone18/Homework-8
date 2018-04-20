@@ -8,6 +8,7 @@
 using namespace std;
 
 const int UNASSIGN_VALUE = -1;
+int done = 0;
 
 const int NUMBER_ROWS = 8; // Number of rows in our chess board
 const int NUMBER_COLS = 8; // Number of columns in our chess board
@@ -70,15 +71,18 @@ bool PlaceQueen(int column)
 	if (column == NUMBER_COLS)
 	{ 
 		// Base Condition
+		const int total_solutions = 92;
+
 		PlacementSolutions.push_back(RowPlacement);
 
+		
 		// Successfully assigned all column queens in the board.  We can just return true. (we know there are 92 solutions)
-		if (PlacementSolutions.size() == 92)
+		if (done == 1)
 		{
-			return true; 
+			return true;
 		}
 
-		//Try another board set
+		// Try another board set
 		else
 		{
 			column = 0;
@@ -87,9 +91,17 @@ bool PlaceQueen(int column)
 	}
 	else
 	{
-		// Try to assign this column's queen to a valid row
+				// Try to assign this column's queen to a valid row
 		for (int row = 0; row < RowPlacement.size(); ++row)
 		{
+			// When every single position has been tried
+			if (column == 8 && row == 8)
+			{
+				// This will lead to the ending of the program
+				done = 1;
+				return done;
+			}
+
 			// If RowPlacement[row] is not UNASSIGN_VALUE, we want to move to the next row
 			if (RowPlacement[row] != UNASSIGN_VALUE)
 				continue;
